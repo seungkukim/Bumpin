@@ -2,6 +2,7 @@ package com.example.bumpin;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.bumpin.databinding.ActivityMapsBinding;
@@ -10,7 +11,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.WeakHashMap;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -44,8 +48,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//        LatLng sydney = new LatLng(-34, 151);
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+//        Marker marker;
+//        String id;
+//        WeakHashMap<Marker, String> mMarkers = new WeakHashMap<Marker, String>();
+//        mMarkers.put(marker, id);
+//
+//        mMap.setOnMarkerClickListener(
+//            new GoogleMap.OnMarkerClickListener() {
+//                @Override
+//                public boolean onMarkerClick(@NonNull Marker marker) {
+//                    return false;
+//                }
+//            }
+//        );
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(@NonNull LatLng latLng) {
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                markerOptions.title(latLng.latitude + " : " + latLng.longitude);
+                mMap.clear();
+
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+                mMap.addMarker(markerOptions);
+            }
+        });
+
     }
 }
