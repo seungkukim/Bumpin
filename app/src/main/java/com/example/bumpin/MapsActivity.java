@@ -93,6 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Button newBtn = findViewById(R.id.newBtn);
         Button listBtn = findViewById(R.id.listBtn);
+        Button deleteBtn = findViewById(R.id.deleteBtn);
         Button friendBtn = findViewById(R.id.friendBtn);
 
         ArrayList<MarkerOptions> trip;
@@ -195,7 +196,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(map.size() == 0) return;
 
 //                Toast.makeText(this,map.size() + "" , Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(), map.size()+"", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), map.size()+"", Toast.LENGTH_SHORT).show();
 
                 final String[] items = map.keySet().toArray(new String[map.size()]);
                 final List<String> selectedItems = new ArrayList<>();
@@ -258,6 +259,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //
 //                AlertDialog alertDialog = builder.create();
 //                alertDialog.show();
+            }
+        });
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(map.size() == 0) return;
+
+//                Toast.makeText(this,map.size() + "" , Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), map.size()+"", Toast.LENGTH_SHORT).show();
+
+                final String[] items = map.keySet().toArray(new String[map.size()]);
+                final List<String> selectedItems = new ArrayList<>();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+                builder.setTitle("Delete Trip");
+                builder.setMultiChoiceItems(items, null,
+                        new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                                if(isChecked){
+                                    selectedItems.add(items[which]);
+                                }else if(selectedItems.contains(items[which])){
+                                    selectedItems.remove(items[which]);
+                                }
+                            }
+                        });
+
+                builder.setCancelable(false);
+
+                builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+//                        String msg = "";
+//                        for (int i = 0; i < selectedItems.size(); i++) {
+//                            msg += "\n" + (i+1) + ":" + selectedItems.get(i) ;
+//                        }
+//                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                        mMap.clear();
+                        for(String s: selectedItems){
+                            map.remove(s);
+                        }
+                        showMarker(selectedItems);
+                    }
+                });
+
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                // handle the neutral button of the dialog to clear
+                // the selected items boolean checkedItem
+                builder.show();
             }
         });
 
