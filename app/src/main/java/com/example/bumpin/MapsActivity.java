@@ -1,10 +1,12 @@
 package com.example.bumpin;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -20,7 +22,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.WeakHashMap;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -29,6 +33,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ActivityMapsBinding binding;
     private Boolean btnClicked = false;
     private String tripName;
+    public HashMap<String, ArrayList<MarkerOptions> > map = new HashMap<String, ArrayList<MarkerOptions> >();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +47,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-//        Button newBtn = findViewById(R.id.newBtn);
-//        Button listBtn = findViewById(R.id.listBtn);
-//        Button friendBtn = findViewById(R.id.friendBtn);
-//
-//        newBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
     }
 
     /**
@@ -100,8 +95,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //            }
 //        });
 
-
-
         Button newBtn = findViewById(R.id.newBtn);
         Button listBtn = findViewById(R.id.listBtn);
         Button friendBtn = findViewById(R.id.friendBtn);
@@ -123,24 +116,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
                 View v = getLayoutInflater().inflate(R.layout.edit_box, null, false);
                 builder.setView(v);
-                final AlertDialog dialog = builder.create();
+                AlertDialog dialog = builder.create();
 
                 Button addTripBtn = (Button) v.findViewById(R.id.addTripBtn);
-                final EditText editTextTripName = (EditText) v.findViewById(R.id.editTextTripName);
+                EditText editTextTripName = (EditText) v.findViewById(R.id.editTextTripName);
+
+                ArrayList<MarkerOptions> trip = new ArrayList<MarkerOptions>();
 
                 addTripBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         tripName = editTextTripName.getText().toString();
                         dialog.dismiss();
+                        if(tripName != null) {
+                            map.put(tripName, trip);
+                        }
+                        else{
+                            return;
+                        }
                     }
                 });
                 dialog.show();
 
+//                ArrayList<MarkerOptions> trip = new ArrayList<MarkerOptions>();
 
-                HashMap<String, ArrayList<MarkerOptions>> map = new HashMap<>();
-                ArrayList<MarkerOptions> trip = new ArrayList<MarkerOptions>();
-                map.put(tripName, trip);
+//                if(tripName.length() == 0){
+//                    Toast.makeText(getApplicationContext(), "Empty Text!!", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                map.put(tripName, trip);
                 PolylineOptions polylineOptions = new PolylineOptions();
 
                 mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -169,7 +173,71 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         listBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                final List<String> tripList = Arrays.asList(map.keySet().toArray(new String[map.size()]));
 
+                if(map.size() == 0) return;
+
+//                Toast.makeText(this,map.size() + "" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), map.size()+"", Toast.LENGTH_SHORT).show();
+
+                final String[] items = map.keySet().toArray(new String[map.size()]);
+                final List<String> selectedItems = new ArrayList<>();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+                builder.setTitle("Select Trip");
+                builder.setMultiChoiceItems(items, null,
+                        new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                                if(isChecked){
+                                    selectedItems.add(items[which]);
+                                }else if(selectedItems.contains(items[which])){
+                                    selectedItems.remove(items[which]);
+                                }
+                            }
+                        });
+
+                builder.setCancelable(false);
+
+                builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        String msg = "";
+                        for (int i = 0; i < selectedItems.size(); i++) {
+                            msg += "\n" + (i+1) + ":" + selectedItems.get(i) ;
+                        }
+                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                // handle the neutral button of the dialog to clear
+                // the selected items boolean checkedItem
+                builder.setNeutralButton("Select ALL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (int i = 0; i < items.length; i++) {
+                            if(selectedItems.contains(items[i])){
+                                continue;
+                            }
+                            else{
+                                selectedItems.add(items[i]);
+                            }
+                        }
+                    }
+                });
+
+                builder.show();
+//                builder.create();
+//
+//                AlertDialog alertDialog = builder.create();
+//                alertDialog.show();
             }
         });
 
