@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Bumpin"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".LoginService.LoginPostActivity"
+            android:exported="false" />
+        <activity
             android:name=".PostActivity"
             android:exported="false" />
         <activity

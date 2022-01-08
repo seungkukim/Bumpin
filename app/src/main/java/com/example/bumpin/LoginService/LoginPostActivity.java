@@ -17,7 +17,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class PostActivity extends AppCompatActivity {
+public class LoginPostActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private LoginService loginService;
@@ -33,7 +33,7 @@ public class PostActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(LoginService.API_URL).build();
         loginService = retrofit.create(LoginService.class);
-        Json_Account_Java version = new Json_Account_Java("username", "password");
+        Json_Account_Java version = new Json_Account_Java("ivebeen", "waiting");
         json_account_java = loginService.post_json_account_java("json", version);
         json_account_java.enqueue(new Callback<Json_Account_Java>() {
            @Override

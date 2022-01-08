@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.bumpin.LoginService.LoginPostActivity;
 import com.google.gson.Gson;
 import com.kakao.sdk.common.util.Utility;
 
@@ -36,11 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
 //        Log.e("GET_KEYHASH", Utility.INSTANCE.getKeyHash(this));
 
-//        Intent intent = new Intent(MainActivity.this, PostActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(MainActivity.this, LoginPostActivity.class);
+        startActivity(intent);
 
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//            startActivity(intent);
 
 //        // Map
 //        Button btn_map = findViewById(R.id.btn_map);
