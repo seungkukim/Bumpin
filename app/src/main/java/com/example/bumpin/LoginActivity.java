@@ -2,9 +2,12 @@ package com.example.bumpin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+
+import com.kakao.sdk.user.UserApiClient;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -26,5 +29,13 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
+
+        // Login
+        Button btn_kakaologin = findViewById(R.id.kakaoLoginButton);
+        btn_login.setOnClickListener(view -> {
+            Intent intent = new Intent(LoginActivity.this, KakaoActivity.class);
+            startActivity(intent);
+        });
+        
     }
 }
