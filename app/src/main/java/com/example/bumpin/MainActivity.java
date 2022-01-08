@@ -35,34 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Log.e("GET_KEYHASH", Utility.INSTANCE.getKeyHash(this));
-
-        Intent intent = new Intent(MainActivity.this, LoginPostActivity.class);
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
-
-//            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//            startActivity(intent);
-
-//        // Map
-//        Button btn_map = findViewById(R.id.btn_map);
-//        btn_map.setOnClickListener(view -> {
-//            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        // Login
-//        Button btn_login = findViewById(R.id.btn_login);
-//        btn_login.setOnClickListener(view -> {
-//            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        // Register
-//        Button btn_register = findViewById(R.id.btn_register);
-//        btn_register.setOnClickListener(view -> {
-//            Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-//            startActivity(intent);
-//        });
-}
-
     }
+}

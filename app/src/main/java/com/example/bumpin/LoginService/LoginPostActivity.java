@@ -23,17 +23,41 @@ public class LoginPostActivity extends AppCompatActivity {
     private LoginService loginService;
     private Call<Json_Account_Java> json_account_java;
     private Call<ResponseBody> comment;
-    private  String result;
+    private  String username;
+    private String password;
+    private String result;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+        // retrieve extra from intent
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                Log.e("D_Test", "in null");
 
+                username= "null";
+                password= "null";
+            } else {
+                Log.e("D_Test", extras.getString("userName"));
+
+                username= extras.getString("userName");
+                password= extras.getString("passWord");
+
+            }
+        } else {
+            Log.e("D_Test", "in outer else");
+
+            username= (String) savedInstanceState.getSerializable("userName");
+            password= (String) savedInstanceState.getSerializable("passWord");
+        }
+
+        // retrofit
         retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(LoginService.API_URL).build();
         loginService = retrofit.create(LoginService.class);
-        Json_Account_Java version = new Json_Account_Java("ivebeen", "waiting");
+        Json_Account_Java version = new Json_Account_Java(username, password);
         json_account_java = loginService.post_json_account_java("json", version);
         json_account_java.enqueue(new Callback<Json_Account_Java>() {
            @Override

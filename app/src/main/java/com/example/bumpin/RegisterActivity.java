@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.bumpin.LoginService.LoginPostActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -18,7 +21,13 @@ public class RegisterActivity extends AppCompatActivity {
         // Register
         Button registerNewButton = findViewById(R.id.registerNewButton);
         registerNewButton.setOnClickListener(view -> {
-            Intent intent = new Intent(RegisterActivity.this, PostActivity.class);
+            String username = editTextRegisterUserName.getText().toString();
+            String password = editTextRegisterPassword.getText().toString();
+            Log.e("D_Register", username);
+            Intent intent = new Intent(RegisterActivity.this, LoginPostActivity.class);
+            intent.putExtra("userName", username);
+            intent.putExtra("passWord", password);
+
             startActivity(intent);
         });
     }
