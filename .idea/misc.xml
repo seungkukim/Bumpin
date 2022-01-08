@@ -3,10 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_get.xml" value="0.1" />
         <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_kakao.xml" value="0.1" />
         <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_maps.xml" value="0.1" />
+        <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_post.xml" value="0.17274569402228976" />
         <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_register.xml" value="0.1" />
       </map>
     </option>

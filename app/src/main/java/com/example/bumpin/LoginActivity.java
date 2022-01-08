@@ -29,13 +29,13 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
-
-        // Login
-        Button btn_kakaologin = findViewById(R.id.kakaoLoginButton);
-        btn_login.setOnClickListener(view -> {
-            Intent intent = new Intent(LoginActivity.this, KakaoActivity.class);
-            startActivity(intent);
-        });
+//
+//        // KakaoLogin
+//        Button btn_kakaologin = findViewById(R.id.kakaoLoginButton);
+//        btn_login.setOnClickListener(view -> {
+//            Intent intent = new Intent(LoginActivity.this, KakaoActivity.class);
+//            startActivity(intent);
+//        });
         
     }
 }
