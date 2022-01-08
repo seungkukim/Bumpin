@@ -2,6 +2,8 @@ package com.example.bumpin;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +23,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,6 +36,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ActivityMapsBinding binding;
     private Boolean btnClicked = false;
     private String tripName;
+    private int tripNumber = 0;
     public HashMap<String, ArrayList<MarkerOptions> > map = new HashMap<String, ArrayList<MarkerOptions> >();
 
     @Override
@@ -52,6 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        Geocoder geocoder = new Geocoder(MapsActivity.this);
 
         // Add a marker in Sydney and move the camera
 //        LatLng sydney = new LatLng(-34, 151);
@@ -99,6 +104,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(btnClicked == true){
                     btnClicked = false;
                     newBtn.setText("Add");
+                    tripNumber = 0;
                     return;
                 }
                 btnClicked = true;
@@ -145,15 +151,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             return;
                         }
                         else{
-                            MarkerOptions mo = new MarkerOptions()
-                                    .position(latLng)
-                                    .draggable(true)
-                                    .title("Your marker title")
-                                    .snippet("Your marker snippet");
-                            mMap.addMarker(mo);
-                            polylineOptions.add(latLng);
-                            mMap.addPolyline(polylineOptions);
-                            trip.add(mo);
+                            tripNumber++;
+                            List<Address> myList;
+                            try {
+                                myList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                                Address address = (Address) myList.get(0);
+                                String addressStr = "";
+                                addressStr += address.getAddressLine(0);
+                                MarkerOptions mo = new MarkerOptions()
+                                        .position(latLng)
+                                        .draggable(true)
+                                        .title(tripName + " " + tripNumber + "번째 장소")
+                                        .snippet(addressStr);
+                                mMap.addMarker(mo);
+                                polylineOptions.add(latLng);
+                                mMap.addPolyline(polylineOptions);
+                                trip.add(mo);
+
+                            }catch (IOException e){
+                                System.out.println(e.toString());
+                                MarkerOptions mo = new MarkerOptions()
+                                        .position(latLng)
+                                        .draggable(true)
+                                        .title(tripName + " " + tripNumber + "번째 장소")
+                                        .snippet("No address info");
+                                mMap.addMarker(mo);
+                                polylineOptions.add(latLng);
+                                mMap.addPolyline(polylineOptions);
+                                trip.add(mo);
+                            }
                         }
                     }
                 });
@@ -193,11 +219,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-                        String msg = "";
-                        for (int i = 0; i < selectedItems.size(); i++) {
-                            msg += "\n" + (i+1) + ":" + selectedItems.get(i) ;
-                        }
-                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+//                        String msg = "";
+//                        for (int i = 0; i < selectedItems.size(); i++) {
+//                            msg += "\n" + (i+1) + ":" + selectedItems.get(i) ;
+//                        }
+//                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                         mMap.clear();
                         showMarker(selectedItems);
                     }
