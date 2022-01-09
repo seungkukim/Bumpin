@@ -1,7 +1,7 @@
-package com.example.bumpin.LoginService;
+package com.example.bumpin.userPathService;
 import com.google.gson.annotations.SerializedName;
 
-public class Json_Account_Java {
+public class Json_Path_Java {
 
     @SerializedName("userName")
     public String username;
@@ -9,7 +9,7 @@ public class Json_Account_Java {
     public String passwd;
 
 
-    public Json_Account_Java(String username, String passwd) {
+    public Json_Path_Java(String username, String passwd) {
        this.username=username;
         this.passwd=passwd;
     }

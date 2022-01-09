@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Bumpin</string>
+    <string name="API_URL">http://116f-143-248-229-108.ngrok.io</string>
 </resources>

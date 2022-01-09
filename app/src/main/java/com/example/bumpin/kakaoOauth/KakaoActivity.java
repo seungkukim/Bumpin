@@ -1,4 +1,4 @@
-package com.example.bumpin;
+package com.example.bumpin.kakaoOauth;
 
 import androidx.appcompat.app.AppCompatActivity;
 

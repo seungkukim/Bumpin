@@ -1,10 +1,12 @@
-package com.example.bumpin;
+package com.example.bumpin.ServerRequestProto;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.bumpin.R;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

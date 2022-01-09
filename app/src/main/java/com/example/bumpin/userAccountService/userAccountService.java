@@ -1,7 +1,5 @@
-package com.example.bumpin.LoginService;
+package com.example.bumpin.userAccountService;
 
-
-import com.example.bumpin.LoginService.Json_Account_Java;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -15,7 +13,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface LoginService {
+public interface userAccountService {
 
     public static final String API_URL = "http://f16b-143-248-229-108.ngrok.io";
 
@@ -33,7 +31,8 @@ public interface LoginService {
     // 자동으로 id 라는 primary key이자 autoincrement 속성을 가지는 intfield가 하나 있기 때문
     // 고유값으로 id 3을 삭제 후, add 해도 id가 3이 되지 않음 -> 고유값이기 떄문
     @POST("heys/")
-    Call<com.example.bumpin.LoginService.Json_Account_Java> post_json_account_java(@Query("format") String json, @Body Json_Account_Java json_account_java);
+    Call<com.example.bumpin.userAccountService.Json_Account_Java> post_json_account_java(@Query("format") String json, @Body Json_Account_Java json_account_java);
+
 
     // 이건 어떤 식으로 바꿔야 하지?
     @FormUrlEncoded

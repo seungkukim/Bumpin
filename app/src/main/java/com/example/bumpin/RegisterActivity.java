@@ -8,7 +8,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.bumpin.LoginService.LoginPostActivity;
+import com.example.bumpin.userAccountService.AccountPostActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -24,7 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
             String username = editTextRegisterUserName.getText().toString();
             String password = editTextRegisterPassword.getText().toString();
             Log.e("D_Register", username);
-            Intent intent = new Intent(RegisterActivity.this, LoginPostActivity.class);
+            Intent intent = new Intent(RegisterActivity.this, AccountPostActivity.class);
             intent.putExtra("userName", username);
             intent.putExtra("passWord", password);
 

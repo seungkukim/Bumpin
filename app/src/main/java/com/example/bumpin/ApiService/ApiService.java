@@ -1,5 +1,10 @@
-package com.example.bumpin;
+package com.example.bumpin.ApiService;
 
+
+import android.content.res.Resources;
+
+import com.example.bumpin.R;
+import com.example.bumpin.ServerRequestProto.Json_Test_Java;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -14,8 +19,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
-
-    public static final String API_URL = "http://bfaf-143-248-229-108.ngrok.io/";
+    public static final String BASE_URL = Resources.getSystem().getString(R.string.API_URL);;
 
     /*
     @Path =  (@Path("pk") int pk)에서 pk는 윗줄에 rest api어노테이션 뒤에 사용하는 변수
@@ -23,6 +27,8 @@ public interface ApiService {
     @Field =  (@Field("email") String test)에서 test는 데이터베이스의 필드 하나에 해당함 즉 email 레코드의 필드 하나 값
     @FormUrlEncoded = 입력된 스트링이나 해시맵을을데이터베이스에 반영될수 있도록 인코딩해줌
     */
+
+    // Prototype
     @GET("tests")
     Call<ResponseBody> get_Test(@Query("format") String json);
 
@@ -39,5 +45,21 @@ public interface ApiService {
 
     @DELETE("tests/{pk}/")
     Call<ResponseBody> delete_Test(@Path("pk") int pk, @Query("format") String json);
+
+//
+// Account
+// 1. send userid and password to check validity(unique id - with unique id or unique index) and add if valid and return token
+// - comment1 and comment2 checked in android studio
+// - token sent to map activity with user id? use token or user id?
+// 2. send userid and password for validity and send token if valid
+
+
+// Trip
+// 1. show total list initially
+// - when initially enter map activity
+// 2. add path
+// - when STOP clicked
+// 3. delete path
+// - when
 
 }

@@ -1,4 +1,4 @@
-package com.example.bumpin;
+package com.example.bumpin.ServerRequestProto;
 import com.google.gson.annotations.SerializedName;
 
 

@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".GlobalApplication"
+        android:name=".kakaoOauth.GlobalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,16 +16,19 @@
         android:theme="@style/Theme.Bumpin"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".LoginService.LoginPostActivity"
+            android:name=".ServerRequestProto.DeleteActivity"
             android:exported="false" />
         <activity
-            android:name=".PostActivity"
+            android:name=".userAccountService.AccountPostActivity"
             android:exported="false" />
         <activity
-            android:name=".GetActivity"
+            android:name=".ServerRequestProto.PostActivity"
             android:exported="false" />
         <activity
-            android:name=".KakaoActivity"
+            android:name=".ServerRequestProto.GetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".kakaoOauth.KakaoActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
