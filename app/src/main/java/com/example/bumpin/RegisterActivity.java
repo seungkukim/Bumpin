@@ -4,7 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.example.bumpin.LoginService.LoginPostActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -12,11 +16,18 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        EditText editTextRegisterUserName = findViewById(R.id.editTextRegisterUserName);
+        EditText editTextRegisterPassword = findViewById(R.id.editTextRegisterPassword);
         // Register
         Button registerNewButton = findViewById(R.id.registerNewButton);
         registerNewButton.setOnClickListener(view -> {
-            Intent intent = new Intent(RegisterActivity.this, MapsActivity.class);
+            String username = editTextRegisterUserName.getText().toString();
+            String password = editTextRegisterPassword.getText().toString();
+            Log.e("D_Register", username);
+            Intent intent = new Intent(RegisterActivity.this, LoginPostActivity.class);
+            intent.putExtra("userName", username);
+            intent.putExtra("passWord", password);
+
             startActivity(intent);
         });
     }
