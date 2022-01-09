@@ -17,7 +17,7 @@ import retrofit2.http.Query;
 
 public interface LoginService {
 
-    public static final String API_URL = "http://562e-143-248-229-108.ngrok.io/";
+    public static final String API_URL = "http://f16b-143-248-229-108.ngrok.io";
 
     /*
     @Path =  (@Path("pk") int pk)에서 pk는 윗줄에 rest api어노테이션 뒤에 사용하는 변수
