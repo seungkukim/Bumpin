@@ -137,7 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     btnClicked = false;
                     newBtn.setText("Add");
                     if(trip != null && trip.size() > 0){
-                        map.put(tripName, trip);;
+                        map.put(tripName, trip);
                     }
                     tripNumber = 0;
                     return;
@@ -244,6 +244,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
+                        showMarker(selectedItems);
                         Intent intent = new Intent(MapsActivity.this, tripPostActivity.class);
 
                         // 예외처리
@@ -251,7 +252,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         Log.e("valid", "shoould not be here");
                         mMap.clear();
-                        showMarker(selectedItems);
+
                     }
                 });
 
