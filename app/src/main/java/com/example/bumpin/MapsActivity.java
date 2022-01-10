@@ -15,8 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.bumpin.AccountService.registerPostActivity;
-import com.example.bumpin.AccountService.tripPostActivity;
+import com.example.bumpin.AccountService.ApiService;
+import com.example.bumpin.AccountService.json_pk;
 import com.example.bumpin.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -45,6 +45,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -55,11 +62,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private int tripNumber = 0;
     private ArrayList<MarkerOptions> trip;
     public HashMap<String, ArrayList<MarkerOptions> > map = new HashMap<String, ArrayList<MarkerOptions> >();
+    private String str_id;
+    // Retrofit
+    private Retrofit retrofit;
+    private ApiService apiService;
+    private Call<json_pk> int_call;
+    private String tripString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        str_id = getIntent().getStringExtra("id");
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -85,6 +98,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 if(btnClicked == true){
+                    //Trip added//////////////////////////////////////////////////////////////////////
+                    retrofit = new Retrofit
+                            .Builder()
+                            .baseUrl(ApiService.API_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    apiService = retrofit.create(ApiService.class);
+                    String str_tripLen = Integer.toString(tripNumber);
+                    //int_call = apiService.add_Path( str_id, tripName, tripString, str_tripLen);
+
+                    int_call = apiService.add_Path( "uN1", "tN1", "tS1", 1);
+                    int_call.enqueue(new Callback<json_pk>() {
+                        @Override
+                        public void onResponse(Call<json_pk> call, Response<json_pk> response) {
+                            if(response.isSuccessful()){
+                                json_pk pk =  response.body();
+
+                                Log.e("trip post success",  pk.get_pk());
+
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), "error= "+ String.valueOf(response.code()),
+                                        Toast.LENGTH_LONG).show();
+                                Log.e("trip post",  String.valueOf(response.code()));
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<json_pk> call, Throwable t) {
+                            Log.e("trip post", t.getMessage());
+                        }
+                    });
+                    ////////////////////////////////////////////////////////////////////////////////////
+                    // Change state variable
                     btnClicked = false;
                     newBtn.setText("Add");
                     if(trip != null && trip.size() > 0){
@@ -198,6 +246,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         // 예외처리
                         startActivity(intent);
+
                         Log.e("valid", "shoould not be here");
                         mMap.clear();
                         showMarker(selectedItems);
@@ -266,10 +315,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
 //                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-                        mMap.clear();
+
                         for(String s: selectedItems){
                             map.remove(s);
+                            // delete each trip name///////////////////////////////////////////////////
+                            retrofit = new Retrofit
+                                    .Builder()
+                                    .baseUrl(ApiService.API_URL)
+                                    .addConverterFactory(GsonConverterFactory.create())
+                                    .build();
+                            apiService = retrofit.create(ApiService.class);
+                            int_call = apiService.delete_Path("abc", "daegu");
+                            //                            Log.e("path remove", "suceess");
+                            int_call.enqueue(new Callback<json_pk>(){
+                                                @Override
+                                                public void onResponse(Call<json_pk> call, Response<json_pk> response) {
+                                                    try {
+                                                        Log.e("path remove", "suceess");
+
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<json_pk> call, Throwable t) {
+                                                    Log.e("path remove", "페일!");
+                                                }
+                                            }
+
+                            );
+                            ////////////////////////////////////////////////////////////////////////////
                         }
+
+
+                            //
+                        mMap.clear();
                         showMarker(selectedItems);
                     }
                 });

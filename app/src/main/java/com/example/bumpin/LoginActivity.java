@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.bumpin.AccountService.ApiService;
-import com.example.bumpin.AccountService.json_Account;
 import com.example.bumpin.AccountService.json_pk;
 
 import retrofit2.Call;
@@ -26,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private ApiService apiService;
     private Call<json_pk> int_call;
+    private Boolean login_success;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,46 +34,81 @@ public class LoginActivity extends AppCompatActivity {
         et_id = findViewById(R.id.editTextUserName);
         et_pwd = findViewById(R.id.editTextPassword);
 
+
         // Login
         Button btn_login = findViewById(R.id.loginButton);
         btn_login.setOnClickListener(view -> {
-            //retrofit
             str_id = et_id.getText().toString();
             str_pwd = et_pwd.getText().toString();
-            retrofit = new Retrofit
-                    .Builder()
-                    .baseUrl(ApiService.API_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
 
-            apiService = retrofit.create(ApiService.class);
-            json_Account json_account = new json_Account(str_id, str_pwd);
-            int_call = apiService.register( str_id, str_pwd);
-            int_call.enqueue(new Callback<json_pk>() {
-                @Override
-                public void onResponse(Call<json_pk> call, Response<json_pk> response) {
-                    if(response.isSuccessful()){
-                        json_pk pk =  response.body();
+            if (str_id.isEmpty() || str_pwd.isEmpty()) {
+                et_id.setText("");
+                et_pwd.setText("");
+                Toast.makeText(getApplicationContext(), "Fill in Input Form",
+                        Toast.LENGTH_SHORT).show();
+            }
+            else{
+                // login_success();
+                login_success = false;
+                Log.e("login post",  Boolean.toString(login_success));
+                //retrofit///////////////////////////////////////////////////////////////////////////////
+                retrofit = new Retrofit
+                        .Builder()
+                        .baseUrl(ApiService.API_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
 
-                        Log.e("register post success",  pk.get_pk());
+                apiService = retrofit.create(ApiService.class);
+                int_call = apiService.login( str_id, str_pwd);
+                int_call.enqueue(new Callback<json_pk>() {
+                                     @Override
+                                     public void onResponse(Call<json_pk> call, Response<json_pk> response) {
+                                         if(response.isSuccessful()){
+                                             json_pk pk =  response.body();
+                                             if (!(pk.get_pk().equals("-1"))) {
+                                                 login_success = true;
+                                                 Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                                                 intent.putExtra("id", str_id);
+                                                 Toast.makeText(getApplicationContext(), "Hello ! ".concat(str_id),
+                                                         Toast.LENGTH_SHORT).show();
+                                                 startActivity(intent);
+                                             }
+                                             else{
+                                                 Toast.makeText(getApplicationContext(), "Invalid Account. Try Again.",
+                                                         Toast.LENGTH_SHORT).show();
+                                             }
+                                             et_id.setText("");
+                                             et_pwd.setText("");
+                                             Log.e("login post success",  pk.get_pk());
+                                         }
+                                         else{
+                                             Toast.makeText(getApplicationContext(), "error= "+ String.valueOf(response.code()),
+                                                     Toast.LENGTH_SHORT).show();
+                                             Log.e("login post",  String.valueOf(response.code()));
 
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "error= "+ String.valueOf(response.code()),
-                                Toast.LENGTH_LONG).show();
-                        Log.e("register post",  String.valueOf(response.code()));
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<json_pk> call, Throwable t) {
-                    Log.e("register post", t.getMessage());
-                }
-            });
-            ////
+                                             et_id.setText("");
+                                             et_pwd.setText("");
+                                             Toast.makeText(getApplicationContext(), "Invalid Account. Try Again.",
+                                                     Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-            startActivity(intent);
+                                         }
+                                     }
+
+                                     @Override
+                                     public void onFailure(Call<json_pk> call, Throwable t) {
+                                         Log.e("login post", t.getMessage());
+
+
+                                         et_id.setText("");
+                                         et_pwd.setText("");
+                                         Toast.makeText(getApplicationContext(), "Invalid Account. Try Again.",
+                                                 Toast.LENGTH_SHORT).show();
+                                     }
+                                 }
+                );
+                /////////////////////////////////////////////////////////////////////////////////////////
+            }
         });
 
         // Register
