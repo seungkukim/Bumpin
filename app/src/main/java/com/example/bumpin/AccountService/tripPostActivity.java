@@ -22,8 +22,8 @@ public class tripPostActivity extends AppCompatActivity {
     private ApiService apiService;
     private String userName, tripName;
     float latitude, logitude;
-    Integer index;
-    private Call<Integer> int_call;
+    json_pk index;
+    private Call<json_pk> int_call;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +44,10 @@ public class tripPostActivity extends AppCompatActivity {
 
         apiService = retrofit.create(ApiService.class);
         json_Trip json_trip = new json_Trip("Seunggu", "Broken Finger", 12, 34, 5);
-        int_call = apiService.addMap("json", json_trip);
-        int_call.enqueue(new Callback<Integer>() {
+        int_call = apiService.delete_Path("json", "json_trip");
+        int_call.enqueue(new Callback<json_pk>() {
             @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
+            public void onResponse(Call<json_pk> call, Response<json_pk> response) {
                 if(response.isSuccessful()){
                     Log.e("register post", "success");
                 }
@@ -59,7 +59,7 @@ public class tripPostActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
+            public void onFailure(Call<json_pk> call, Throwable t) {
                 Log.e("register post", t.getMessage());
             }
         });

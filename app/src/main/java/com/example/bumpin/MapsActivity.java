@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.WeakHashMap;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -122,7 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 if(btnClicked == true){
-                    //Trip added
+                    //Trip added//////////////////////////////////////////////////////////////////////
                     retrofit = new Retrofit
                             .Builder()
                             .baseUrl(ApiService.API_URL)
@@ -131,7 +132,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     apiService = retrofit.create(ApiService.class);
                     String str_tripLen = Integer.toString(tripNumber);
-                    int_call = apiService.add_Path( str_id, tripName, tripString, str_tripLen);
+                    //int_call = apiService.add_Path( str_id, tripName, tripString, str_tripLen);
+
+                    int_call = apiService.add_Path( "uN1", "tN1", "tS1", 1);
                     int_call.enqueue(new Callback<json_pk>() {
                         @Override
                         public void onResponse(Call<json_pk> call, Response<json_pk> response) {
@@ -153,7 +156,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             Log.e("trip post", t.getMessage());
                         }
                     });
-                    ///
+                    ////////////////////////////////////////////////////////////////////////////////////
                     // Change state variable
                     btnClicked = false;
                     newBtn.setText("Add");
@@ -277,10 +280,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                            msg += "\n" + (i+1) + ":" + selectedItems.get(i) ;
 //                        }
 //                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(MapsActivity.this, tripPostActivity.class);
-
-                        // 예외처리
-                        startActivity(intent);
+//                        Intent intent = new Intent(MapsActivity.this, tripPostActivity.class);
+//
+//                        // 예외처리
+//                        startActivity(intent);
                         Log.e("valid", "shoould not be here");
                         mMap.clear();
                         showMarker(selectedItems);
@@ -354,10 +357,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                            msg += "\n" + (i+1) + ":" + selectedItems.get(i) ;
 //                        }
 //                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-                        mMap.clear();
+
                         for(String s: selectedItems){
                             map.remove(s);
+                            // delete each trip name///////////////////////////////////////////////////
+                            retrofit = new Retrofit
+                                    .Builder()
+                                    .baseUrl(ApiService.API_URL)
+                                    .addConverterFactory(GsonConverterFactory.create())
+                                    .build();
+                            apiService = retrofit.create(ApiService.class);
+                            int_call = apiService.delete_Path("abc", "daegu");
+                            //                            Log.e("path remove", "suceess");
+                            int_call.enqueue(new Callback<json_pk>(){
+                                                @Override
+                                                public void onResponse(Call<json_pk> call, Response<json_pk> response) {
+                                                    try {
+                                                        Log.e("path remove", "suceess");
+
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<json_pk> call, Throwable t) {
+                                                    Log.e("path remove", "페일!");
+                                                }
+                                            }
+
+                            );
+                            ////////////////////////////////////////////////////////////////////////////
                         }
+
+
+                            //
+                        mMap.clear();
                         showMarker(selectedItems);
                     }
                 });
