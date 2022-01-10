@@ -20,8 +20,6 @@ public interface ApiService {
     @GET("login/validate/{userName}/{passWord}")
     Call<json_pk> login(@Path("userName") String userName, @Path("passWord") String passWord);
 
-    @GET("login/usevalid/")
-    Call<json_pk> validate(@Query("format") String json, @Body json_Account json_account);
     @GET("login/register/{userName}/{passWord}")
     Call<json_pk> register(@Path("userName") String userName, @Path("passWord") String passWord);
     //uN: userName, tN: tripName, data:JsonToString format, len: total number of pin point in path
