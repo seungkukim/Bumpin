@@ -9,21 +9,22 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
-    public static final String API_URL = ("http://179d-143-248-229-141.ngrok.io").concat("/");
+    public static final String API_URL = ("http://192.249.18.117").concat("/");
 
-    @POST("login")
+    @GET("login")
     Call<Integer> login(@Query("format") String json, @Body json_Account json_account);
 
-    @POST("login/")
-    Call<json_pk> register(@Query("format") String json, @Body json_Account json_account);
+    @GET("login/register/{userName}/{passWord}")
+    Call<json_pk> register(@Path("userName") String userName, @Path("passWord") String passWord);
 
 
-    @POST("account/")
+    @GET("account/")
     Call<Integer> addMap(@Query("format") String json, @Body json_Trip json_trip);
 
-    @POST("validate/")
-    Call<Integer> validate(@Query("format") String json, @Body json_Account json_account);
+    @GET("validate/")
+    Call<json_pk> validate(@Query("format") String json, @Body json_Account json_account);
 }

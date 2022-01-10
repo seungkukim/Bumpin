@@ -16,6 +16,8 @@ public class LoginActivity extends AppCompatActivity {
         // Login
         Button btn_login = findViewById(R.id.loginButton);
         btn_login.setOnClickListener(view -> {
+
+
             Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
             startActivity(intent);
         });

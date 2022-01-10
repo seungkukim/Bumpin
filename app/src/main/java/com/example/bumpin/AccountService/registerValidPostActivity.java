@@ -20,7 +20,7 @@ public class registerValidPostActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private ApiService apiService;
     private String str_id, str_pwd;
-    private Call<Integer> int_call;
+    private Call<json_pk> int_call;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,11 +38,12 @@ public class registerValidPostActivity extends AppCompatActivity {
         apiService = retrofit.create(ApiService.class);
         json_Account json_account = new json_Account(str_id, str_pwd);
         int_call = apiService.validate("json", json_account);
-        int_call.enqueue(new Callback<Integer>() {
+        int_call.enqueue(new Callback<json_pk>() {
             @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
+            public void onResponse(Call<json_pk> call, Response<json_pk> response) {
                 if(response.isSuccessful()){
-                    Log.e("valid post", response.body().toString());
+                    json_pk body = response.body();
+                    Log.e("valid post", body.get_pk());
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "error= "+ String.valueOf(response.code()),
@@ -52,7 +53,7 @@ public class registerValidPostActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
+            public void onFailure(Call<json_pk> call, Throwable t) {
                 Log.e("valid post", t.getMessage());
             }
         });

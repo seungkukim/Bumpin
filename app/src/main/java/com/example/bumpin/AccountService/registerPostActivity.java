@@ -37,14 +37,14 @@ public class registerPostActivity extends AppCompatActivity {
 
         apiService = retrofit.create(ApiService.class);
         json_Account json_account = new json_Account(str_id, str_pwd);
-        int_call = apiService.register("json", json_account);
+        int_call = apiService.register( str_id, str_pwd);
         int_call.enqueue(new Callback<json_pk>() {
             @Override
             public void onResponse(Call<json_pk> call, Response<json_pk> response) {
                 if(response.isSuccessful()){
                     json_pk pk =  response.body();
 
-//                    Log.e("register post success", );
+                    Log.e("register post success",  pk.get_pk());
 
                 }
                 else{
