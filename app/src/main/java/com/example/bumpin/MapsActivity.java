@@ -26,21 +26,34 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+//import com.google.gson.Gson;
+//import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.WeakHashMap;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    public Geocoder geocoder;
     private ActivityMapsBinding binding;
     private Boolean btnClicked = false;
     private String tripName;
     private int tripNumber = 0;
+    private ArrayList<MarkerOptions> trip;
     public HashMap<String, ArrayList<MarkerOptions> > map = new HashMap<String, ArrayList<MarkerOptions> >();
 
     @Override
@@ -50,50 +63,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        Geocoder geocoder = new Geocoder(MapsActivity.this);
-
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-//        Marker marker;
-//        String id;
-//        WeakHashMap<Marker, String> mMarkers = new WeakHashMap<Marker, String>();
-//        mMarkers.put(marker, id);
-//
-//        mMap.setOnMarkerClickListener(
-//            new GoogleMap.OnMarkerClickListener() {
-//                @Override
-//                public boolean onMarkerClick(@NonNull Marker marker) {
-//                    return false;
-//                }
-//            }
-//        );
-
-//        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-//            @Override
-//            public void onMapClick(@NonNull LatLng latLng) {
-//                MarkerOptions markerOptions = new MarkerOptions();
-//                markerOptions.position(latLng);
-//                markerOptions.title(latLng.latitude + " : " + latLng.longitude);
-//                mMap.clear();
-//
-//                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-//
-//                mMap.addMarker(markerOptions);
-//            }
-//        });
+        geocoder = new Geocoder(MapsActivity.this);
 
         Button newBtn = findViewById(R.id.newBtn);
         Button listBtn = findViewById(R.id.listBtn);
@@ -109,6 +87,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(btnClicked == true){
                     btnClicked = false;
                     newBtn.setText("Add");
+                    if(trip != null && trip.size() > 0){
+                        map.put(tripName, trip);;
+                    }
                     tripNumber = 0;
                     return;
                 }
@@ -123,7 +104,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Button addTripBtn = (Button) v.findViewById(R.id.addTripBtn);
                 EditText editTextTripName = (EditText) v.findViewById(R.id.editTextTripName);
 
-                ArrayList<MarkerOptions> trip = new ArrayList<MarkerOptions>();
+                trip = new ArrayList<MarkerOptions>();
 
                 addTripBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -140,13 +121,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
                 dialog.show();
 
-//                ArrayList<MarkerOptions> trip = new ArrayList<MarkerOptions>();
-
-//                if(tripName.length() == 0){
-//                    Toast.makeText(getApplicationContext(), "Empty Text!!", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                map.put(tripName, trip);
                 PolylineOptions polylineOptions = new PolylineOptions();
 
                 mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -157,9 +131,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                         else{
                             tripNumber++;
-                            List<Address> myList;
                             try {
-                                myList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                                List<Address> myList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
                                 Address address = (Address) myList.get(0);
                                 String addressStr = "";
                                 addressStr += address.getAddressLine(0);
@@ -195,12 +168,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         listBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                final List<String> tripList = Arrays.asList(map.keySet().toArray(new String[map.size()]));
-
                 if(map.size() == 0) return;
-
-//                Toast.makeText(this,map.size() + "" , Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getApplicationContext(), map.size()+"", Toast.LENGTH_SHORT).show();
 
                 final String[] items = map.keySet().toArray(new String[map.size()]);
                 final List<String> selectedItems = new ArrayList<>();
@@ -213,8 +181,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                                 if(isChecked){
                                     selectedItems.add(items[which]);
+                                    map.remove(items[which]);
                                 }else if(selectedItems.contains(items[which])){
                                     selectedItems.remove(items[which]);
+                                    map.remove(items[which]);
                                 }
                             }
                         });
@@ -224,11 +194,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-//                        String msg = "";
-//                        for (int i = 0; i < selectedItems.size(); i++) {
-//                            msg += "\n" + (i+1) + ":" + selectedItems.get(i) ;
-//                        }
-//                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MapsActivity.this, tripPostActivity.class);
 
                         // 예외처리
@@ -275,7 +240,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 if(map.size() == 0) return;
-
 //                Toast.makeText(this,map.size() + "" , Toast.LENGTH_SHORT).show();
 //                Toast.makeText(getApplicationContext(), map.size()+"", Toast.LENGTH_SHORT).show();
 
@@ -301,10 +265,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-//                        String msg = "";
-//                        for (int i = 0; i < selectedItems.size(); i++) {
-//                            msg += "\n" + (i+1) + ":" + selectedItems.get(i) ;
-//                        }
 //                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                         mMap.clear();
                         for(String s: selectedItems){
@@ -330,7 +290,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void showMarker(List<String> keyList){
-
         for(String s: keyList){
             if(map.containsKey(s)){
                 ArrayList<MarkerOptions> markerOptions = map.get(s);
@@ -347,6 +306,81 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+//    public String locToString(List<MarkerOptions> trip){
+//        JSONObject data = new JSONObject();
+//        for(MarkerOptions mo: trip){
+//            LatLng latLng = mo.getPosition()
+//            data.put(Double.toString(latLng.latitude), str(latLng.longitude));
+//        }
+//////        return data.toJSONString();
+////        Gson gson = new Gson();
+////        JsonObject jsonObject = new JsonObject();
+////        for(MarkerOptions mo: trip){
+////            LatLng latLng = mo.getPosition();
+////            jsonObject.addProperty(Double.toString(latLng.latitude), Double.toString(latLng.longitude));
+////        }
+////        return gson.toJson(jsonObject);
+//    }
+
+
+    public String locToString(List<MarkerOptions> trip){
+        String ans = "";
+        for(MarkerOptions mo: trip){
+            LatLng latLng = mo.getPosition();
+            ans += (latLng.latitude + "a" + latLng.longitude) + "b";
+        }
+        return ans;
+    }
+
+    public List<MarkerOptions> stringToLoc(String str, String tripName) {
+        ArrayList<MarkerOptions> arr = new ArrayList<>();
+        String[] pairArr = str.split("b");
+        int i = 1;
+        for(String s : pairArr) {
+            String[] singlePair = s.split("a");
+            Double d1 = Double.parseDouble(singlePair[0]);
+            Double d2 = Double.parseDouble(singlePair[1]);
+
+            try {
+                List<Address>myList = geocoder.getFromLocation(d1, d2, 1);
+                Address address = (Address) myList.get(0);
+                String addressStr = "";
+                addressStr += address.getAddressLine(0);
+
+                LatLng latLng = new LatLng(d1, d2);
+                MarkerOptions mo = new MarkerOptions()
+                        .position(latLng)
+                        .draggable(true)
+                        .title(tripName + " " + i + "번째 장소")
+                        .snippet(addressStr);
+                arr.add(mo);
+            }catch (IOException e) {
+                LatLng latLng = new LatLng(d1, d2);
+                MarkerOptions mo = new MarkerOptions()
+                        .position(latLng)
+                        .draggable(true)
+                        .title(tripName + " " + i + "번째 장소")
+                        .snippet("No address info");
+                arr.add(mo);
+            }
+            i++;
+        }
+        return arr;
+    }
+
+
+//    public List<MarkerOptions> stringToLoc(String str) {
+//        ArrayList<MarkerOptions> arr = new ArrayList<>();
+//        Gson gson = new Gson();
+//        JsonElement jsonElement = gson.fromJson(str, JsonElement.class);
+//        JsonObject jsonObject = jsonElement.getAsJsonObject();
+//        Set<String> set = jsonObject.keySet();
+//        for(String key: set){
+//            Double latitude = Double.parseDouble(key);
+//            Double longitude = Double.parseDouble(jsonObject.get(key));
+//
+//        }
+//
     public void removeMarker(String[] keyList){
 //        for(String s: keyList){
 //            if(map.containsKey(s)){
