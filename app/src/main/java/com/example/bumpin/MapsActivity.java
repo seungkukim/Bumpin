@@ -62,6 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private int tripNumber = 0;
     private ArrayList<MarkerOptions> trip;
     public HashMap<String, ArrayList<MarkerOptions> > map = new HashMap<String, ArrayList<MarkerOptions> >();
+    public ArrayList<String> selectedItems = new ArrayList<>();
     private String str_id;
     // Retrofit
     private Retrofit retrofit;
@@ -161,6 +162,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         dialog.dismiss();
                         if(tripName != null) {
                             map.put(tripName, trip);
+                            selectedItems.add(tripName);
                         }
                         else{
                             return;
@@ -219,7 +221,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(map.size() == 0) return;
 
                 final String[] items = map.keySet().toArray(new String[map.size()]);
-                final List<String> selectedItems = new ArrayList<>();
+//                final List<String> selectedItems = new ArrayList<>();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
                 builder.setTitle("Select Trip");
@@ -228,11 +230,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             @Override
                             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                                 if(isChecked){
-                                    selectedItems.add(items[which]);
-                                    map.remove(items[which]);
+                                    if(!selectedItems.contains(items[which])) {
+                                        selectedItems.add(items[which]);
+                                    }
                                 }else if(selectedItems.contains(items[which])){
                                     selectedItems.remove(items[which]);
-                                    map.remove(items[which]);
                                 }
                             }
                         });
@@ -302,9 +304,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             @Override
                             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                                 if(isChecked){
-                                    selectedItems.add(items[which]);
-                                }else if(selectedItems.contains(items[which])){
-                                    selectedItems.remove(items[which]);
+                                    if(selectedItems.contains(items[which])) {
+                                        selectedItems.remove(items[which]);
+                                        map.remove(items[which]);
+                                        showMarker(selectedItems);
+                                    }
                                 }
                             }
                         });
@@ -371,6 +375,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void showMarker(List<String> keyList){
+        mMap.clear();
         for(String s: keyList){
             if(map.containsKey(s)){
                 ArrayList<MarkerOptions> markerOptions = map.get(s);
