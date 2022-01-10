@@ -16,10 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.bumpin.AccountService.ApiService;
-import com.example.bumpin.AccountService.json_Account;
 import com.example.bumpin.AccountService.json_pk;
-import com.example.bumpin.AccountService.registerPostActivity;
-import com.example.bumpin.AccountService.tripPostActivity;
 import com.example.bumpin.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

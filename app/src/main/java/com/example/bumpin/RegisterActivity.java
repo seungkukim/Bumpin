@@ -10,10 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.bumpin.AccountService.ApiService;
-import com.example.bumpin.AccountService.json_Account;
 import com.example.bumpin.AccountService.json_pk;
-import com.example.bumpin.AccountService.registerPostActivity;
-import com.example.bumpin.AccountService.registerValidPostActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,7 +64,6 @@ public class RegisterActivity extends AppCompatActivity {
                             .build();
 
                     apiService = retrofit.create(ApiService.class);
-                    json_Account json_account = new json_Account(str_id, str_pwd);
                     int_call = apiService.register( str_id, str_pwd);
                     int_call.enqueue(new Callback<json_pk>() {
                         @Override

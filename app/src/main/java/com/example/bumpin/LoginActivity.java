@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.bumpin.AccountService.ApiService;
-import com.example.bumpin.AccountService.json_Account;
 import com.example.bumpin.AccountService.json_pk;
 
 import retrofit2.Call;
@@ -60,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {
                         .build();
 
                 apiService = retrofit.create(ApiService.class);
-                json_Account json_account = new json_Account(str_id, str_pwd);
                 int_call = apiService.login( str_id, str_pwd);
                 int_call.enqueue(new Callback<json_pk>() {
                                      @Override
