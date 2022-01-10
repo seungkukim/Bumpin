@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private ApiService apiService;
     private Call<json_pk> int_call;
+    private String pKey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
 
         et_id = findViewById(R.id.editTextUserName);
         et_pwd = findViewById(R.id.editTextPassword);
+
 
         // Login
         Button btn_login = findViewById(R.id.loginButton);
@@ -48,31 +50,32 @@ public class LoginActivity extends AppCompatActivity {
 
             apiService = retrofit.create(ApiService.class);
             json_Account json_account = new json_Account(str_id, str_pwd);
-            int_call = apiService.register( str_id, str_pwd);
+            int_call = apiService.login( str_id, str_pwd);
             int_call.enqueue(new Callback<json_pk>() {
                 @Override
                 public void onResponse(Call<json_pk> call, Response<json_pk> response) {
                     if(response.isSuccessful()){
                         json_pk pk =  response.body();
-
-                        Log.e("register post success",  pk.get_pk());
+                        pKey = pk.get_pk();
+                        Log.e("login post success",  pk.get_pk());
 
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "error= "+ String.valueOf(response.code()),
                                 Toast.LENGTH_LONG).show();
-                        Log.e("register post",  String.valueOf(response.code()));
+                        Log.e("login post",  String.valueOf(response.code()));
                     }
                 }
 
                 @Override
                 public void onFailure(Call<json_pk> call, Throwable t) {
-                    Log.e("register post", t.getMessage());
+                    Log.e("login post", t.getMessage());
                 }
             });
             ////
 
             Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+            intent.putExtra("pk", pKey);
             startActivity(intent);
         });
 

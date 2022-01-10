@@ -110,6 +110,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     btnClicked = false;
                     newBtn.setText("Add");
                     tripNumber = 0;
+                    //Trip added
                     return;
                 }
                 btnClicked = true;
