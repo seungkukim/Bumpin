@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Bumpin</string>
+    <string name="ARI_URL">"http://df10-143-248-229-141.ngrok.io"</string>
 </resources>

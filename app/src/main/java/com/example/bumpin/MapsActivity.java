@@ -2,9 +2,11 @@ package com.example.bumpin;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.bumpin.AccountService.registerPostActivity;
+import com.example.bumpin.AccountService.tripPostActivity;
 import com.example.bumpin.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -225,6 +229,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                            msg += "\n" + (i+1) + ":" + selectedItems.get(i) ;
 //                        }
 //                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MapsActivity.this, tripPostActivity.class);
+
+                        // 예외처리
+                        startActivity(intent);
+                        Log.e("valid", "shoould not be here");
                         mMap.clear();
                         showMarker(selectedItems);
                     }
