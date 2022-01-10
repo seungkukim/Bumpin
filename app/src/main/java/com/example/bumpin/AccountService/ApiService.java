@@ -18,13 +18,15 @@ public interface ApiService {
     @GET("login/validate/{userName}/{passWord}")
     Call<json_pk> login(@Path("userName") String userName, @Path("passWord") String passWord);
 
+    @GET("login/usevalid/")
+    Call<json_pk> validate(@Query("format") String json, @Body json_Account json_account);
     @GET("login/register/{userName}/{passWord}")
     Call<json_pk> register(@Path("userName") String userName, @Path("passWord") String passWord);
-
-
-    @GET("account/")
-    Call<Integer> addMap(@Query("format") String json, @Body json_Trip json_trip);
-
-    @GET("validate/")
-    Call<json_pk> validate(@Query("format") String json, @Body json_Account json_account);
+    //uN: userName, tN: tripName, data:JsonToString format, len: total number of pin point in path
+    @GET("trip/create/{uN}/{tN}/{data}/{len}")
+    Call<json_pk> add_Path(@Path("uN") String uN, @Path("tN") String tN, @Path("data") String data, @Path("len") String len);
+    @GET("trip/delete/{uN}/{tN}")
+    Call<ResponseBody> delete_Path(@Path("uN") String uN, @Path("tN") String tN);
+    @GET("trip/get/{uN}")
+    Call<ResponseBody> total_Path(@Path("uN") String uN);
 }

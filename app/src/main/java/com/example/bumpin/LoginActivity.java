@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
             ////
 
             Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-            intent.putExtra("pk", pKey);
+            intent.putExtra("id", str_id);
             startActivity(intent);
         });
 

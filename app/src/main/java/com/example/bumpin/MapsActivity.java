@@ -15,6 +15,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.bumpin.AccountService.ApiService;
+import com.example.bumpin.AccountService.json_Account;
+import com.example.bumpin.AccountService.json_pk;
 import com.example.bumpin.AccountService.registerPostActivity;
 import com.example.bumpin.AccountService.tripPostActivity;
 import com.example.bumpin.databinding.ActivityMapsBinding;
@@ -34,6 +37,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.WeakHashMap;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -42,11 +51,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String tripName;
     private int tripNumber = 0;
     public HashMap<String, ArrayList<MarkerOptions> > map = new HashMap<String, ArrayList<MarkerOptions> >();
+    private String str_id;
+    // Retrofit
+    private Retrofit retrofit;
+    private ApiService apiService;
+    private Call<json_pk> int_call;
+    private String tripString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        str_id = getIntent().getStringExtra("id");
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -107,10 +122,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 if(btnClicked == true){
+                    //Trip added
+                    retrofit = new Retrofit
+                            .Builder()
+                            .baseUrl(ApiService.API_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    apiService = retrofit.create(ApiService.class);
+                    String str_tripLen = Integer.toString(tripNumber);
+                    int_call = apiService.add_Path( str_id, tripName, tripString, str_tripLen);
+                    int_call.enqueue(new Callback<json_pk>() {
+                        @Override
+                        public void onResponse(Call<json_pk> call, Response<json_pk> response) {
+                            if(response.isSuccessful()){
+                                json_pk pk =  response.body();
+
+                                Log.e("trip post success",  pk.get_pk());
+
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), "error= "+ String.valueOf(response.code()),
+                                        Toast.LENGTH_LONG).show();
+                                Log.e("trip post",  String.valueOf(response.code()));
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<json_pk> call, Throwable t) {
+                            Log.e("trip post", t.getMessage());
+                        }
+                    });
+                    ///
+                    // Change state variable
                     btnClicked = false;
                     newBtn.setText("Add");
                     tripNumber = 0;
-                    //Trip added
                     return;
                 }
                 btnClicked = true;
