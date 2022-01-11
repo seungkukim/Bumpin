@@ -60,7 +60,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Boolean btnClicked = false;
     private String tripName;
     private int tripNumber = 0;
-    private ArrayList<MarkerOptions> trip;
+    private ArrayList<MarkerOptions> trip = new ArrayList<>();
     public HashMap<String, ArrayList<MarkerOptions> > map = new HashMap<String, ArrayList<MarkerOptions> >();
     public ArrayList<String> selectedItems = new ArrayList<>();
     private String str_id;
@@ -92,7 +92,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Button deleteBtn = findViewById(R.id.deleteBtn);
         Button friendBtn = findViewById(R.id.friendBtn);
 
-        ArrayList<MarkerOptions> trip;
+        trip = new ArrayList<MarkerOptions>();;
         PolylineOptions polylineOptions;
 
         newBtn.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +136,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // Change state variable
                     btnClicked = false;
                     newBtn.setText("Add");
-                    if(trip != null && trip.size() > 0){
+                    if(trip.size() > 0){
                         map.put(tripName, trip);
                     }
                     tripNumber = 0;
@@ -245,13 +245,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
                         showMarker(selectedItems);
-                        Intent intent = new Intent(MapsActivity.this, tripPostActivity.class);
+//                        Intent intent = new Intent(MapsActivity.this, tripPostActivity.class);
 
                         // 예외처리
-                        startActivity(intent);
+//                        startActivity(intent);
 
-                        Log.e("valid", "shoould not be here");
-                        mMap.clear();
+//                        Log.e("valid", "shoould not be here");
+//                        mMap.clear();
 
                     }
                 });
@@ -414,7 +414,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String ans = "";
         for(MarkerOptions mo: trip){
             LatLng latLng = mo.getPosition();
-            ans += (latLng.latitude + "a" + latLng.longitude) + "b";
+            ans += ((Double.toString(latLng.latitude) + "a" + Double.toString(latLng.longitude)) + "b");
         }
         return ans;
     }
