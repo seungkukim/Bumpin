@@ -1,7 +1,7 @@
-#CS496_Week2
+# CS496_Week2
 
 ------------
-###FrontEnd
+#### FrontEnd
 
 
 
@@ -9,7 +9,7 @@
 
 
 ------------
-###BackEnd
+#### BackEnd
 
 ##### [ Server ]
 Django 이용
