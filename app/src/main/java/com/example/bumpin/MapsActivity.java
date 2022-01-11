@@ -87,7 +87,80 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        //total map //////////////////////////////////////////////////////////////////////
 
+        retrofit = new Retrofit
+                .Builder()
+                .baseUrl(ApiService.API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        apiService = retrofit.create(ApiService.class);
+        body_call = apiService.total_Path(str_id);
+
+        body_call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                Log.e("trip retrieve","fucl");
+                if(response.isSuccessful()){
+
+                    Log.e("trip retrieve","done");
+                    try {
+
+                        Log.e("trip retrieve","done");
+                        jsonObject = new JSONObject(new Gson().toJson(response.body()));
+//                        int count =0;
+//                        try {
+//                            count = Integer.parseInt((String) jsonObject.get("0"));
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                        if (jsonObject != null){
+//                            try {
+//                                count = Integer.parseInt((String) jsonObject.get("0"));
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                            JSONObject tmpObject;
+//                            for (int i = 1; i <= count; i ++){
+//                                try {
+//                                    String index = String.valueOf(i);
+//
+//                                    tmpObject =new JSONObject(new Gson().toJson(jsonObject.get(index)));
+//                                    String data =tmpObject.get("data").toString();
+//                                    String tN = tmpObject.get("tripName").toString();
+////                                    List<MarkerOptions> trip= stringToLoc( data, tN);
+//                                    Log.e("trip retrieve","done");
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        }
+
+                        // traverse jsonObject and only pass string to stringToLoc
+                        // count the number of key value in object
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.e("trip get success", " ");
+
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "error= "+ String.valueOf(response.code()),
+                            Toast.LENGTH_LONG).show();
+                    Log.e("trip get",  String.valueOf(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Log.e("trip get", t.getMessage());
+            }
+        });
+
+
+        //total map //////////////////////////////////////////////////////////////////////
 
 
     }
@@ -97,12 +170,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         geocoder = new Geocoder(MapsActivity.this);
 
-
-        //total map //////////////////////////////////////////////////////////////////////
-
-        //int_call = apiService.add_Path( "uN1", "tN1", "tS1", 1);
-
-        //total map //////////////////////////////////////////////////////////////////////
 
 
         Button newBtn = findViewById(R.id.newBtn);

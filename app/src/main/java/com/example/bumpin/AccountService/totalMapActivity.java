@@ -29,11 +29,11 @@ public class totalMapActivity extends AppCompatActivity {
     private JSONObject jsonObject;
     private int count;
     private String str_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_total_map);
-        str_id = getIntent().getStringExtra("id");
 
         retrofit = new Retrofit
                 .Builder()
@@ -70,6 +70,7 @@ public class totalMapActivity extends AppCompatActivity {
                                     tmpObject =new JSONObject(new Gson().toJson(jsonObject.get(index)));
                                     String data =tmpObject.get("data").toString();
                                     String tN = tmpObject.get("tripName").toString();
+//                                    List<MarkerOptions> trip= stringToLoc( data, tN);
                                     Log.e("trip retrieve","done");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
