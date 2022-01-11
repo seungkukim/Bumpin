@@ -22,6 +22,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -64,9 +65,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String tripName;
     private int tripNumber = 0;
     private boolean isInitialized = false;
+    private boolean isFriendSelected = false;
     private ArrayList<MarkerOptions> trip = new ArrayList<>();
+    public HashMap<String, HashMap<String, ArrayList<MarkerOptions> >  > TotalMap = new HashMap<String, HashMap<String, ArrayList<MarkerOptions> >  >();
     public HashMap<String, ArrayList<MarkerOptions>> map = new HashMap<String, ArrayList<MarkerOptions>>();
     public ArrayList<String> selectedItems = new ArrayList<>();
+    public ArrayList<String> selectedFriends = new ArrayList<>();
+    public ArrayList<String> friendList = new ArrayList<>();
     private String str_id;
     // Retrofit
     private Retrofit retrofit;
@@ -218,6 +223,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             }
                         }
 
+                        TotalMap.put(str_id, map);
+
                         // traverse jsonObject and only pass string to stringToLoc
                         // count the number of key value in object
 
@@ -238,6 +245,69 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.e("trip get", t.getMessage());
             }
         });
+        ////////////////////////
+
+        ////////////////////////friend
+        retrofit = new Retrofit
+                .Builder()
+                .baseUrl(ApiService.API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        apiService = retrofit.create(ApiService.class);
+        body_call = apiService.get_Friend(str_id);
+
+        friendList = new ArrayList<>();
+        friendList.add(0, "ME");
+
+        body_call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response.isSuccessful()) {
+
+                    try {
+
+                        jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                        int count = 0;
+                        if (jsonObject != null) {
+                            try {
+                                count = Integer.parseInt((String) jsonObject.get("0"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            JSONObject tmpObject;
+                            for (int i = 1; i <= count; i++) {
+                                try {
+                                    String index = String.valueOf(i);
+                                    String friend = (String) jsonObject.get(index);
+                                    friendList.add(friend);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        // traverse jsonObject and only pass string to stringToLoc
+                        // count the number of key value in object
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.e("friend get success", " ");
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "error= " + String.valueOf(response.code()),
+                            Toast.LENGTH_LONG).show();
+                    Log.e("friend get", String.valueOf(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Log.e("friend get", t.getMessage());
+            }
+        });
+        ///////////////////////////
 
     }
 
@@ -262,6 +332,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (isInitialized == false) {
                     showMarker(selectedItems);
                     isInitialized = true;
+                    LatLng p = new LatLng(36.3721, 127.3604);
+
+                    CameraPosition position = new CameraPosition.Builder().target(p).zoom(6.5f).build();
+                    mMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
                     return;
                 }
             }
@@ -542,53 +616,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-//        friendBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//
-//
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
-//                builder.setTitle("Select Friend");
-//                builder.setMultiChoiceItems(items, null,
-//                        new DialogInterface.OnMultiChoiceClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-//                                if (isChecked) {
-//                                    selectedItems.add(items[which]);
-//                                }
-//                            }
-//                        });
-//
-//                builder.setCancelable(false);
-//
-//                builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int which) {
-//
-//
-//                    }
-//                });
-//
-//                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                    }
-//                });
-//
-//                // handle the neutral button of the dialog to clear
-//                // the selected items boolean checkedItem
+        friendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+                builder.setTitle("Select Friend");
+                mMap.clear();
+                selectedFriends = new ArrayList<>();
+                builder.setMultiChoiceItems(friendList.toArray(new String[friendList.size()]), null, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which, boolean isChecked) {
+                        if(isChecked){
+                            return;
+                        }
+                    }
+                });
+
+                builder.setCancelable(false);
+
+                builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+
+
+                    }
+                });
+
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
 //                builder.setNeutralButton("Select ALL", new DialogInterface.OnClickListener() {
 //                    @Override
 //                    public void onClick(DialogInterface dialog, int which) {
 //
 //                    }
 //                });
-//                builder.show();
-//            }
-//        });
+                builder.show();
+            }
+        });
 
 
     }
@@ -605,27 +675,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.addPolyline(polylineOptions);
                 }
             } else {
-                continue;
+                return;
             }
         }
     }
 
-//    public String locToString(List<MarkerOptions> trip){
-//        JSONObject data = new JSONObject();
-//        for(MarkerOptions mo: trip){
-//            LatLng latLng = mo.getPosition()
-//            data.put(Double.toString(latLng.latitude), str(latLng.longitude));
-//        }
-//////        return data.toJSONString();
-////        Gson gson = new Gson();
-////        JsonObject jsonObject = new JsonObject();
-////        for(MarkerOptions mo: trip){
-////            LatLng latLng = mo.getPosition();
-////            jsonObject.addProperty(Double.toString(latLng.latitude), Double.toString(latLng.longitude));
-////        }
-////        return gson.toJson(jsonObject);
-//    }
-
+    public void consecShowMarker(ArrayList<String> keyList, String userName) {
+        if(selectedFriends.contains(userName)){
+            HashMap<String, ArrayList<MarkerOptions> >  x = TotalMap.get(userName);
+            for (String s : keyList) {
+                if (x.containsKey(s)) {
+                    ArrayList<MarkerOptions> markerOptions = x.get(s);
+                    PolylineOptions polylineOptions = new PolylineOptions();
+                    for (MarkerOptions mo : markerOptions) {
+                        mMap.addMarker(mo);
+                        polylineOptions.add(mo.getPosition());
+                        mMap.addPolyline(polylineOptions);
+                    }
+                }
+            }
+        }
+        else{
+            return;
+        }
+    }
 
     public String locToString(List<MarkerOptions> trip) {
         String ans = "";
@@ -675,4 +748,71 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return arr;
     }
 
+    public HashMap<String, ArrayList<MarkerOptions> > getFriendInfo(String str_id){
+        HashMap<String, ArrayList<MarkerOptions> > friendMap = new HashMap<String, ArrayList<MarkerOptions> >();
+
+        retrofit = new Retrofit
+                .Builder()
+                .baseUrl(ApiService.API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        apiService = retrofit.create(ApiService.class);
+        body_call = apiService.total_Path(str_id);
+
+        body_call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response.isSuccessful()) {
+                    try {
+                        jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                        int count = 0;
+                        try {
+                            count = Integer.parseInt((String) jsonObject.get("0"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (jsonObject != null) {
+                            try {
+                                count = Integer.parseInt((String) jsonObject.get("0"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            JSONObject tmpObject;
+                            for (int i = 1; i <= count; i++) {
+                                try {
+                                    String index = String.valueOf(i);
+                                    tmpObject = (JSONObject) jsonObject.get(index);
+                                    String data = tmpObject.get("data").toString();  //error
+                                    String tN = tmpObject.get("tripName").toString();
+                                    ArrayList<MarkerOptions> trip = stringToLoc(data, tN);
+//                                    map.put(tN, trip);
+                                    friendMap.put(tN, trip);
+//                                    selectedItems.add(tN);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.e("trip get success", " ");
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "error= " + String.valueOf(response.code()),
+                            Toast.LENGTH_LONG).show();
+                    Log.e("trip get", String.valueOf(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Log.e("trip get", t.getMessage());
+            }
+        });
+
+        return friendMap;
+    }
 }
