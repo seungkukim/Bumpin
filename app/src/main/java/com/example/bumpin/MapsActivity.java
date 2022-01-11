@@ -28,10 +28,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 //import com.google.gson.Gson;
 //import com.google.gson.GsonBuilder;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
@@ -51,6 +53,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import java.util.Iterator;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -68,6 +71,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Retrofit retrofit;
     private ApiService apiService;
     private Call<json_pk> int_call;
+    private Call body_call;
+    private JSONObject jsonObject;
+    private int count;
+
     private String tripString;
 
     @Override
@@ -82,12 +89,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
 
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         geocoder = new Geocoder(MapsActivity.this);
+
+
+        //total map //////////////////////////////////////////////////////////////////////
+
+        //int_call = apiService.add_Path( "uN1", "tN1", "tS1", 1);
+
+        //total map //////////////////////////////////////////////////////////////////////
+
 
         Button newBtn = findViewById(R.id.newBtn);
         Button listBtn = findViewById(R.id.listBtn);
@@ -141,40 +157,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     });
                     //////////////////////////////////////////////////////////////////////////////////
-//                    retrofit = new Retrofit
-//                            .Builder()
-//                            .baseUrl(ApiService.API_URL)
-//                            .addConverterFactory(GsonConverterFactory.create())
-//                            .build();
-//
-//                    apiService = retrofit.create(ApiService.class);
-//                    tripString = locToString(trip);
-//                    Log.e("tripString", tripString);
-//                    int_call = apiService.add_Path( str_id, tripName, tripString, tripNumber);
-////
-////                    int_call = apiService.add_Path( "uN1", "tN1", "tS1", 1);
-//                    int_call.enqueue(new Callback<json_pk>() {
-//                        @Override
-//                        public void onResponse(Call<json_pk> call, Response<json_pk> response) {
-//                            if(response.isSuccessful()){
-//                                String pk =  response.body().toString();
-//
-//                                Log.e("trip post success",  pk);
-//
-//                            }
-//                            else{
-//                                Toast.makeText(getApplicationContext(), "error= "+ String.valueOf(response.code()),
-//                                        Toast.LENGTH_LONG).show();
-//                                Log.e("trip post",  String.valueOf(response.code()));
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<json_pk> call, Throwable t) {
-//                            Log.e("trip post", t.getMessage());
-//                        }
-//                    });
-//                    ////////////////////////////////////////////////////////////////////////////////////
+
                     // Change state variable
 
                     tripNumber = 0;

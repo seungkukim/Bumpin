@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Bumpin"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".AccountService.totalMapActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
