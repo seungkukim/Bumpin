@@ -61,8 +61,11 @@ public class LoginActivity extends AppCompatActivity {
                 apiService = retrofit.create(ApiService.class);
                 int_call = apiService.login( str_id, str_pwd);
                 int_call.enqueue(new Callback<json_pk>() {
+
                                      @Override
                                      public void onResponse(Call<json_pk> call, Response<json_pk> response) {
+
+                                         Log.e("login post",  "1");
                                          if(response.isSuccessful()){
                                              json_pk pk =  response.body();
                                              if (!(pk.get_pk().equals("-1"))) {
@@ -109,7 +112,9 @@ public class LoginActivity extends AppCompatActivity {
                 );
                 /////////////////////////////////////////////////////////////////////////////////////////
             }
+            Log.e("login post",  "2");
         });
+
 
         // Register
         Button btn_register = findViewById(R.id.registerButton);
