@@ -80,6 +80,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
     }
 
     @Override
@@ -97,13 +99,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         newBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                trip = new ArrayList<MarkerOptions>();
+//                trip = new ArrayList<MarkerOptions>();
                 if(btnClicked == true){
                     btnClicked = false;
                     newBtn.setText("Add");
-                    if(trip.size() > 0){
-                        map.put(tripName, trip);
-                    }
+//                    if(trip.size() > 0){
+//                        map.put(tripName, trip);
+//                    }
                     tripString = locToString(trip);
 
                     //Trip added//////////////////////////////////////////////////////////////////////
@@ -116,7 +118,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     apiService = retrofit.create(ApiService.class);
                     int_call = apiService.add_Path( str_id, tripName, tripString, tripNumber);
 
-                    int_call = apiService.add_Path( "uN1", "tN1", "tS1", 1);
+                    //int_call = apiService.add_Path( "uN1", "tN1", "tS1", 1);
                     int_call.enqueue(new Callback<json_pk>() {
                         @Override
                         public void onResponse(Call<json_pk> call, Response<json_pk> response) {
@@ -178,6 +180,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     tripNumber = 0;
                     return;
                 }
+                trip = new ArrayList<MarkerOptions>();
                 btnClicked = true;
                 newBtn.setText("Stop");
 
@@ -446,7 +449,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng latLng = mo.getPosition();
             Log.e("loctostring", "String.valueOf(latLng.latitude)");
             Log.e("loctostring", String.valueOf(latLng.latitude));
-
             ans += (latLng.latitude + "a" + latLng.longitude) + "b";
         }
 
