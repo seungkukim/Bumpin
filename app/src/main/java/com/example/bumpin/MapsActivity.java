@@ -326,7 +326,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                Toast.makeText(getApplicationContext(), map.size()+"", Toast.LENGTH_SHORT).show();
 
                 final String[] items = map.keySet().toArray(new String[map.size()]);
-                final List<String> selectedItems = new ArrayList<>();
+//                final List<String> selectedItems = new ArrayList<>();
+                final List<String> deletedItems = new ArrayList<>();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
                 builder.setTitle("Delete Trip");
@@ -335,9 +336,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             @Override
                             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                                 if(isChecked){
+                                    deletedItems.add(items[which]);
                                     if(selectedItems.contains(items[which])) {
                                         selectedItems.remove(items[which]);
-                                        map.remove(items[which]);
+//                                        map.remove(items[which]);
                                     }
                                 }
                             }
@@ -350,7 +352,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onClick(DialogInterface dialogInterface, int which) {
 //                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 
-                        for(String s: selectedItems){
+                        for(String s: deletedItems){
                             map.remove(s);
                             // delete each trip name///////////////////////////////////////////////////
                             retrofit = new Retrofit
@@ -383,7 +385,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
 
                         //
-                        mMap.clear();
+//                        mMap.clear();
                         showMarker(selectedItems);
                     }
                 });
