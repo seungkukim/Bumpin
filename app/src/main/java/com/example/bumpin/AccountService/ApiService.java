@@ -28,5 +28,5 @@ public interface ApiService {
     @GET("trip/delete/{uN}/{tN}")
     Call<json_pk> delete_Path(@Path("uN") String uN, @Path("tN") String tN);
     @GET("trip/get/{uN}")
-    Call<ResponseBody> total_Path(@Path("uN") String uN);
+    Call<Object> total_Path(@Path("uN") String uN);
 }
