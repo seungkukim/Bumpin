@@ -84,9 +84,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
+
         //total map //////////////////////////////////////////////////////////////////////
 
         retrofit = new Retrofit
@@ -109,33 +110,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         Log.e("trip retrieve","done");
                         jsonObject = new JSONObject(new Gson().toJson(response.body()));
-//                        int count =0;
-//                        try {
-//                            count = Integer.parseInt((String) jsonObject.get("0"));
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                        if (jsonObject != null){
-//                            try {
-//                                count = Integer.parseInt((String) jsonObject.get("0"));
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                            JSONObject tmpObject;
-//                            for (int i = 1; i <= count; i ++){
-//                                try {
-//                                    String index = String.valueOf(i);
-//
-//                                    tmpObject =new JSONObject(new Gson().toJson(jsonObject.get(index)));
-//                                    String data =tmpObject.get("data").toString();
-//                                    String tN = tmpObject.get("tripName").toString();
-////                                    List<MarkerOptions> trip= stringToLoc( data, tN);
-//                                    Log.e("trip retrieve","done");
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        }
+                        int count =0;
+                        try {
+                            count = Integer.parseInt((String) jsonObject.get("0"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (jsonObject != null){
+                            try {
+                                count = Integer.parseInt((String) jsonObject.get("0"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            JSONObject tmpObject;
+                            for (int i = 1; i <= count; i ++){
+                                try {
+                                    String index = String.valueOf(i);
+                                    tmpObject = (JSONObject) jsonObject.get(index);
+                                    String data =tmpObject.get("data").toString();  //error
+                                    String tN = tmpObject.get("tripName").toString();
+                                    ArrayList<MarkerOptions> trip = stringToLoc( data, tN);
+                                    map.put(tN, trip);
+                                    selectedItems.add(tN);
+                                    Log.e("trip retrieve","done");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
 
                         // traverse jsonObject and only pass string to stringToLoc
                         // count the number of key value in object
@@ -158,10 +160,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.e("trip get", t.getMessage());
             }
         });
-
-
         //total map //////////////////////////////////////////////////////////////////////
-
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
     }
 
@@ -179,6 +181,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         trip = new ArrayList<MarkerOptions>();
         PolylineOptions polylineOptions;
+
+        showMarker(selectedItems);
 
         newBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -418,8 +422,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     .addConverterFactory(GsonConverterFactory.create())
                                     .build();
                             apiService = retrofit.create(ApiService.class);
-                            int_call = apiService.delete_Path("abc", "daegu");
-                            //                            Log.e("path remove", "suceess");
+                            int_call = apiService.delete_Path(str_id, s);
+                            //                              Log.e("path remove", "suceess");
                             int_call.enqueue(new Callback<json_pk>(){
                                                  @Override
                                                  public void onResponse(Call<json_pk> call, Response<json_pk> response) {
@@ -460,9 +464,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+//        showMarker(selectedItems);
+
+
     }
 
-    public void showMarker(List<String> keyList){
+    public void showMarker(ArrayList<String> keyList){
         mMap.clear();
         for(String s: keyList){
             if(map.containsKey(s)){
@@ -508,7 +515,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return ans;
     }
 
-    public List<MarkerOptions> stringToLoc(String str, String tripName) {
+    public ArrayList<MarkerOptions> stringToLoc(@NonNull String str, String tripName) {
         ArrayList<MarkerOptions> arr = new ArrayList<>();
         String[] pairArr = str.split("b");
         int i = 1;
