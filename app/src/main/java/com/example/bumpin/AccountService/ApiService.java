@@ -29,4 +29,9 @@ public interface ApiService {
     Call<json_pk> delete_Path(@Path("uN") String uN, @Path("tN") String tN);
     @GET("trip/get/{uN}")
     Call<Object> total_Path(@Path("uN") String uN);
+    //friend
+    @GET("friend/get/{userName}")
+    Call<Object> get_Friend(@Path("userName") String userName);
+
+
 }
