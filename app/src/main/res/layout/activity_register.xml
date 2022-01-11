@@ -4,48 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    android:background="@drawable/register_background"
+    tools:context=".RegisterActivity"
+    tools:layout_editor_absoluteX="-1dp"
+    tools:layout_editor_absoluteY="-147dp">
 
     <EditText
         android:id="@+id/editTextRegisterUserName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        style="@style/hint_txt"
+        android:layout_width="290dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="284dp"
+        android:background="@drawable/round_edittext"
         android:ems="10"
-        android:hint="User name"
+        android:gravity="center"
+        android:hint="Name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextRegisterPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint = "Enter Password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextRegisterUserName" />
-
-    <EditText
         android:id="@+id/editTextRegisterConfirmPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/sub_txt"
+        android:layout_width="290dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/round_edittext"
         android:ems="10"
-        android:hint = "Confirm Password"
+        android:gravity="center"
+        android:hint="Confirm Password"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/editTextRegisterPassword"
+        app:layout_constraintStart_toStartOf="@+id/editTextRegisterPassword"
         app:layout_constraintTop_toBottomOf="@+id/editTextRegisterPassword" />
 
     <Button
         android:id="@+id/registerNewButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/button_txt"
+        android:layout_width="162dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/round_button"
         android:text="Register"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/editTextRegisterConfirmPassword"
+        app:layout_constraintStart_toStartOf="@+id/editTextRegisterConfirmPassword"
         app:layout_constraintTop_toBottomOf="@+id/editTextRegisterConfirmPassword" />
+
+    <EditText
+        android:id="@+id/editTextRegisterPassword"
+        style="@style/sub_txt"
+        android:layout_width="290dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/round_edittext"
+        android:ems="10"
+        android:gravity="center"
+
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/editTextRegisterUserName"
+        app:layout_constraintHorizontal_bias="0.983"
+        app:layout_constraintStart_toStartOf="@+id/editTextRegisterUserName"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRegisterUserName" />
+
+    <TextView
+        android:id="@+id/textView3"
+        style="@style/title_txt"
+        android:layout_width="293dp"
+        android:layout_height="88dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:text="Join us"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/editTextRegisterUserName"
+        app:layout_constraintEnd_toEndOf="@+id/editTextRegisterUserName"
+        app:layout_constraintStart_toStartOf="@+id/editTextRegisterUserName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

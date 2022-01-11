@@ -3,17 +3,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/drawable/round_button.xml" value="0.21481481481481482" />
+        <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/drawable/round_edittext.xml" value="0.21481481481481482" />
+        <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/font/raleway_bold.xml" value="0.3177083333333333" />
+        <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/font/raleway_extrabold.xml" value="0.3177083333333333" />
+        <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/font/raleway_medium.xml" value="0.3177083333333333" />
+        <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/font/raleway_regular.xml" value="0.3177083333333333" />
         <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_delete.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_get.xml" value="0.1" />
         <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_kakao.xml" value="0.1" />
-        <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_maps.xml" value="0.1" />
+        <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_maps.xml" value="0.2" />
         <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_post.xml" value="0.17274569402228976" />
         <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_register.xml" value="0.1" />
         <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_register_post.xml" value="0.15" />
         <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_register_valid_post.xml" value="0.16" />
-        <entry key="..\:/Users/robin/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_register.xml" value="0.34479166666666666" />
+        <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/activity_total_map.xml" value="0.2875" />
+        <entry key="..\:/Users/dangn/AndroidStudioProjects/Bumpin/app/src/main/res/layout/edit_box.xml" value="0.18885869565217392" />
       </map>
     </option>
   </component>
