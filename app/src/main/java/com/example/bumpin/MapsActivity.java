@@ -63,8 +63,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Boolean btnClicked = false;
     private String tripName;
     private int tripNumber = 0;
+    private boolean isInitialized = false;
     private ArrayList<MarkerOptions> trip = new ArrayList<>();
-    public HashMap<String, ArrayList<MarkerOptions> > map = new HashMap<String, ArrayList<MarkerOptions> >();
+    public HashMap<String, ArrayList<MarkerOptions>> map = new HashMap<String, ArrayList<MarkerOptions>>();
     public ArrayList<String> selectedItems = new ArrayList<>();
     private String str_id;
     // Retrofit
@@ -88,6 +89,84 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                .findFragmentById(R.id.map);
 //        mapFragment.getMapAsync(this);
 
+//        //total map //////////////////////////////////////////////////////////////////////
+//
+//        retrofit = new Retrofit
+//                .Builder()
+//                .baseUrl(ApiService.API_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        apiService = retrofit.create(ApiService.class);
+//        body_call = apiService.total_Path(str_id);
+//
+//        body_call.enqueue(new Callback() {
+//            @Override
+//            public void onResponse(Call call, Response response) {
+//                Log.e("trip retrieve","fucl");
+//                if(response.isSuccessful()){
+//
+//                    Log.e("trip retrieve","done");
+//                    try {
+//
+//                        Log.e("trip retrieve","done");
+//                        jsonObject = new JSONObject(new Gson().toJson(response.body()));
+//                        int count =0;
+//                        try {
+//                            count = Integer.parseInt((String) jsonObject.get("0"));
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                        if (jsonObject != null){
+//                            try {
+//                                count = Integer.parseInt((String) jsonObject.get("0"));
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                            JSONObject tmpObject;
+//                            for (int i = 1; i <= count; i ++){
+//                                try {
+//                                    String index = String.valueOf(i);
+//                                    tmpObject = (JSONObject) jsonObject.get(index);
+//                                    String data =tmpObject.get("data").toString();  //error
+//                                    String tN = tmpObject.get("tripName").toString();
+//                                    ArrayList<MarkerOptions> trip = stringToLoc( data, tN);
+//                                    map.put(tN, trip);
+//                                    selectedItems.add(tN);
+//                                    Log.e("trip retrieve","done");
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        }
+//
+//                        // traverse jsonObject and only pass string to stringToLoc
+//                        // count the number of key value in object
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                    Log.e("trip get success", " ");
+//
+//                }
+//                else{
+//                    Toast.makeText(getApplicationContext(), "error= "+ String.valueOf(response.code()),
+//                            Toast.LENGTH_LONG).show();
+//                    Log.e("trip get",  String.valueOf(response.code()));
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call call, Throwable t) {
+//                Log.e("trip get", t.getMessage());
+//            }
+//        });
+        //total map //////////////////////////////////////////////////////////////////////
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+
         //total map //////////////////////////////////////////////////////////////////////
 
         retrofit = new Retrofit
@@ -102,37 +181,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         body_call.enqueue(new Callback() {
             @Override
             public void onResponse(Call call, Response response) {
-                Log.e("trip retrieve","fucl");
-                if(response.isSuccessful()){
+                Log.e("trip retrieve", "fucl");
+                if (response.isSuccessful()) {
 
-                    Log.e("trip retrieve","done");
+                    Log.e("trip retrieve", "done");
                     try {
 
-                        Log.e("trip retrieve","done");
+                        Log.e("trip retrieve", "done");
                         jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                        int count =0;
+                        int count = 0;
                         try {
                             count = Integer.parseInt((String) jsonObject.get("0"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        if (jsonObject != null){
+                        if (jsonObject != null) {
                             try {
                                 count = Integer.parseInt((String) jsonObject.get("0"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                             JSONObject tmpObject;
-                            for (int i = 1; i <= count; i ++){
+                            for (int i = 1; i <= count; i++) {
                                 try {
                                     String index = String.valueOf(i);
                                     tmpObject = (JSONObject) jsonObject.get(index);
-                                    String data =tmpObject.get("data").toString();  //error
+                                    String data = tmpObject.get("data").toString();  //error
                                     String tN = tmpObject.get("tripName").toString();
-                                    ArrayList<MarkerOptions> trip = stringToLoc( data, tN);
+                                    ArrayList<MarkerOptions> trip = stringToLoc(data, tN);
                                     map.put(tN, trip);
                                     selectedItems.add(tN);
-                                    Log.e("trip retrieve","done");
+                                    Log.e("trip retrieve", "done");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -147,11 +226,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                     Log.e("trip get success", " ");
 
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "error= "+ String.valueOf(response.code()),
+                } else {
+                    Toast.makeText(getApplicationContext(), "error= " + String.valueOf(response.code()),
                             Toast.LENGTH_LONG).show();
-                    Log.e("trip get",  String.valueOf(response.code()));
+                    Log.e("trip get", String.valueOf(response.code()));
                 }
             }
 
@@ -160,10 +238,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.e("trip get", t.getMessage());
             }
         });
-        //total map //////////////////////////////////////////////////////////////////////
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
     }
 
@@ -173,22 +247,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         geocoder = new Geocoder(MapsActivity.this);
 
 
-
         Button newBtn = findViewById(R.id.newBtn);
         Button listBtn = findViewById(R.id.listBtn);
         Button deleteBtn = findViewById(R.id.deleteBtn);
         Button friendBtn = findViewById(R.id.friendBtn);
 
-        trip = new ArrayList<MarkerOptions>();
         PolylineOptions polylineOptions;
 
-        showMarker(selectedItems);
+//        showMarker(selectedItems);
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(@NonNull LatLng latLng) {
+                if (isInitialized == false) {
+                    showMarker(selectedItems);
+                    isInitialized = true;
+                    return;
+                }
+            }
+        });
 
         newBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                trip = new ArrayList<MarkerOptions>();
-                if(btnClicked == true){
+                if (btnClicked == true) {
                     btnClicked = false;
                     newBtn.setText("Add");
 //                    if(trip.size() > 0){
@@ -204,22 +287,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             .build();
 
                     apiService = retrofit.create(ApiService.class);
-                    int_call = apiService.add_Path( str_id, tripName, tripString, tripNumber);
+                    int_call = apiService.add_Path(str_id, tripName, tripString, tripNumber);
 
                     //int_call = apiService.add_Path( "uN1", "tN1", "tS1", 1);
                     int_call.enqueue(new Callback<json_pk>() {
                         @Override
                         public void onResponse(Call<json_pk> call, Response<json_pk> response) {
-                            if(response.isSuccessful()){
-                                String pk =  response.body().toString();
+                            if (response.isSuccessful()) {
+                                String pk = response.body().toString();
 
-                                Log.e("trip post success",  pk);
+                                Log.e("trip post success", pk);
 
-                            }
-                            else{
-                                Toast.makeText(getApplicationContext(), "error= "+ String.valueOf(response.code()),
+                            } else {
+                                Toast.makeText(getApplicationContext(), "error= " + String.valueOf(response.code()),
                                         Toast.LENGTH_LONG).show();
-                                Log.e("trip post",  String.valueOf(response.code()));
+                                Log.e("trip post", String.valueOf(response.code()));
                             }
                         }
 
@@ -233,7 +315,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // Change state variable
                     btnClicked = false;
                     newBtn.setText("Add");
-                    if(trip.size() > 0){
+                    if (trip.size() > 0) {
                         map.put(tripName, trip);
                     }
                     tripNumber = 0;
@@ -252,17 +334,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 EditText editTextTripName = (EditText) v.findViewById(R.id.editTextTripName);
 
 
-
                 addTripBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         tripName = editTextTripName.getText().toString();
                         dialog.dismiss();
-                        if(tripName != null) {
+                        if (tripName != null) {
                             map.put(tripName, trip);
                             selectedItems.add(tripName);
-                        }
-                        else{
+                        } else {
                             return;
                         }
                     }
@@ -274,10 +354,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(@NonNull LatLng latLng) {
-                        if(btnClicked == false) {
+                        if (btnClicked == false) {
                             return;
-                        }
-                        else{
+                        } else {
                             tripNumber++;
                             try {
                                 List<Address> myList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
@@ -295,7 +374,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 mMap.addPolyline(polylineOptions);
                                 trip.add(mo);
 
-                            }catch (IOException e){
+                            } catch (IOException e) {
                                 System.out.println(e.toString());
                                 MarkerOptions mo = new MarkerOptions()
                                         .position(latLng)
@@ -317,7 +396,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         listBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(map.size() == 0) return;
+                if (map.size() == 0) return;
 
                 final String[] items = map.keySet().toArray(new String[map.size()]);
 //                final List<String> selectedItems = new ArrayList<>();
@@ -329,8 +408,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                                if(isChecked){
-                                        selectedItems.add(items[which]);
+                                if (isChecked) {
+                                    selectedItems.add(items[which]);
                                 }
                             }
                         });
@@ -360,10 +439,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         for (int i = 0; i < items.length; i++) {
-                            if(selectedItems.contains(items[i])){
+                            if (selectedItems.contains(items[i])) {
                                 continue;
-                            }
-                            else{
+                            } else {
                                 selectedItems.add(items[i]);
                             }
                         }
@@ -382,7 +460,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(map.size() == 0) return;
+                if (map.size() == 0) return;
 //                Toast.makeText(this,map.size() + "" , Toast.LENGTH_SHORT).show();
 //                Toast.makeText(getApplicationContext(), map.size()+"", Toast.LENGTH_SHORT).show();
 
@@ -396,9 +474,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                                if(isChecked){
+                                if (isChecked) {
                                     deletedItems.add(items[which]);
-                                    if(selectedItems.contains(items[which])) {
+                                    if (selectedItems.contains(items[which])) {
                                         selectedItems.remove(items[which]);
 //                                        map.remove(items[which]);
                                     }
@@ -413,7 +491,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onClick(DialogInterface dialogInterface, int which) {
 //                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 
-                        for(String s: deletedItems){
+                        for (String s : deletedItems) {
                             map.remove(s);
                             // delete each trip name///////////////////////////////////////////////////
                             retrofit = new Retrofit
@@ -424,7 +502,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             apiService = retrofit.create(ApiService.class);
                             int_call = apiService.delete_Path(str_id, s);
                             //                              Log.e("path remove", "suceess");
-                            int_call.enqueue(new Callback<json_pk>(){
+                            int_call.enqueue(new Callback<json_pk>() {
                                                  @Override
                                                  public void onResponse(Call<json_pk> call, Response<json_pk> response) {
                                                      try {
@@ -464,24 +542,69 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-//        showMarker(selectedItems);
+//        friendBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//
+//
+//
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+//                builder.setTitle("Select Friend");
+//                builder.setMultiChoiceItems(items, null,
+//                        new DialogInterface.OnMultiChoiceClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+//                                if (isChecked) {
+//                                    selectedItems.add(items[which]);
+//                                }
+//                            }
+//                        });
+//
+//                builder.setCancelable(false);
+//
+//                builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int which) {
+//
+//
+//                    }
+//                });
+//
+//                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                    }
+//                });
+//
+//                // handle the neutral button of the dialog to clear
+//                // the selected items boolean checkedItem
+//                builder.setNeutralButton("Select ALL", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                    }
+//                });
+//                builder.show();
+//            }
+//        });
 
 
     }
 
-    public void showMarker(ArrayList<String> keyList){
+    public void showMarker(ArrayList<String> keyList) {
         mMap.clear();
-        for(String s: keyList){
-            if(map.containsKey(s)){
+        for (String s : keyList) {
+            if (map.containsKey(s)) {
                 ArrayList<MarkerOptions> markerOptions = map.get(s);
                 PolylineOptions polylineOptions = new PolylineOptions();
-                for(MarkerOptions mo: markerOptions){
+                for (MarkerOptions mo : markerOptions) {
                     mMap.addMarker(mo);
                     polylineOptions.add(mo.getPosition());
                     mMap.addPolyline(polylineOptions);
                 }
-            }
-            else{
+            } else {
                 continue;
             }
         }
@@ -504,9 +627,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //    }
 
 
-    public String locToString(List<MarkerOptions> trip){
+    public String locToString(List<MarkerOptions> trip) {
         String ans = "";
-        for(MarkerOptions mo: trip){
+        for (MarkerOptions mo : trip) {
             LatLng latLng = mo.getPosition();
             ans += ((Double.toString(latLng.latitude) + "a" + Double.toString(latLng.longitude)) + "b");
         }
@@ -519,13 +642,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ArrayList<MarkerOptions> arr = new ArrayList<>();
         String[] pairArr = str.split("b");
         int i = 1;
-        for(String s : pairArr) {
+        for (String s : pairArr) {
             String[] singlePair = s.split("a");
             Double d1 = Double.parseDouble(singlePair[0]);
             Double d2 = Double.parseDouble(singlePair[1]);
 
             try {
-                List<Address>myList = geocoder.getFromLocation(d1, d2, 1);
+                List<Address> myList = geocoder.getFromLocation(d1, d2, 1);
                 Address address = (Address) myList.get(0);
                 String addressStr = "";
                 addressStr += address.getAddressLine(0);
@@ -538,7 +661,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .title(tripName + " " + i + "번째 장소")
                         .snippet(addressStr);
                 arr.add(mo);
-            }catch (IOException e) {
+            } catch (IOException e) {
                 LatLng latLng = new LatLng(d1, d2);
                 MarkerOptions mo = new MarkerOptions()
                         .position(latLng)
@@ -552,37 +675,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return arr;
     }
 
-
-//    public List<MarkerOptions> stringToLoc(String str) {
-//        ArrayList<MarkerOptions> arr = new ArrayList<>();
-//        Gson gson = new Gson();
-//        JsonElement jsonElement = gson.fromJson(str, JsonElement.class);
-//        JsonObject jsonObject = jsonElement.getAsJsonObject();
-//        Set<String> set = jsonObject.keySet();
-//        for(String key: set){
-//            Double latitude = Double.parseDouble(key);
-//            Double longitude = Double.parseDouble(jsonObject.get(key));
-//
-//        }
-//
-    public void removeMarker(String[] keyList){
-//        for(String s: keyList){
-//            if(map.containsKey(s)){
-//                ArrayList<MarkerOptions> markerOptions = map.get(s);
-//                for(MarkerOptions mo: markerOptions){
-//                    mo.visible(false);
-//                }
-//            }
-//            else{
-//                continue;
-//            }
-//        }
-        mMap.clear();
-    }
-
-    public void removeMarker(MarkerOptions[] markerOptions){
-//        for(MarkerOptions mo: markerOptions){
-//            mo.visible(false);
-//        }
-    }
 }
