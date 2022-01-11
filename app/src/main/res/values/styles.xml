@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="title_txt">
+        <item name="android:textSize">50dp</item>
+        <item name="fontFamily">@font/raleway_extrabold</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
+
+    <style name="main_txt">
+        <item name="android:textSize">20dp</item>
+        <item name="fontFamily">@font/raleway_bold</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
+    <style name="sub_txt">
+        <item name="android:textSize">15dp</item>
+        <item name="fontFamily">@font/raleway_medium</item>
+        <item name="android:textColor">@color/medium_gray</item>
+    </style>
+    <style name="button_txt">
+        <item name="android:textSize">15dp</item>
+        <item name="fontFamily">@font/raleway_bold</item>
+        <item name="android:textColor">@color/medium_gray</item>
+    </style>
+    <style name="num_txt">
+        <item name="android:textSize">20dp</item>
+        <item name="fontFamily">@font/raleway_bold</item>
+        <item name="android:textColor">@color/medium_gray</item>
+    </style>
+    <style name="hint_txt">
+        <item name="android:textSize">15dp</item>
+        <item name="fontFamily">@font/raleway_medium</item>
+        <item name="android:textColor">@color/light_gray</item>
+    </style>
+
+</resources>

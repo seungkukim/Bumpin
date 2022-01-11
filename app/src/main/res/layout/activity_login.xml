@@ -4,37 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".LoginActivity">
 
     <EditText
         android:id="@+id/editTextUserName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        style="@style/sub_txt"
+        android:layout_width="290dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="328dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/round_edittext"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:gravity="center"
         android:hint="Name"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        style="@style/sub_txt"
+        android:layout_width="290dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/round_edittext"
         android:ems="10"
+        android:gravity="center"
+
         android:hint="Password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/editTextUserName"
-        app:layout_constraintStart_toStartOf="@+id/editTextUserName"
+        app:layout_constraintHorizontal_bias="0.983"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextUserName" />
 
     <Button
         android:id="@+id/loginButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        style="@style/button_txt"
+        android:layout_width="142dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/round_button"
         android:text="Login"
         app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
         app:layout_constraintStart_toStartOf="@+id/editTextPassword"
@@ -42,11 +53,29 @@
 
     <Button
         android:id="@+id/registerButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/button_txt"
+        android:layout_width="142dp"
+        android:layout_height="39dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="204dp"
+        android:background="@drawable/round_button"
         android:text="Register"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/loginButton"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/loginButton"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+
+    <TextView
+        android:id="@+id/textView3"
+        style="@style/title_txt"
+        android:layout_width="319dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="162dp"
+        android:gravity="center"
+        android:text="Trip With You"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

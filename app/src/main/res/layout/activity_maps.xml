@@ -21,41 +21,59 @@
 
         <Button
             android:id="@+id/newBtn"
+
+            style="@style/button_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_button"
+            android:padding="10dp"
             android:text="ADD" />
 
         <Button
             android:id="@+id/deleteBtn"
+
+            style="@style/button_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_alignRight="@id/newBtn"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_button"
+            android:padding="10dp"
             android:text="Delete" />
 
         <Button
             android:id="@+id/listBtn"
+            style="@style/button_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_alignRight="@id/newBtn"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_button"
+            android:padding="10dp"
             android:text="List" />
 
         <Button
             android:id="@+id/friendBtn"
+            style="@style/button_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_alignRight="@id/newBtn"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_button"
+            android:padding="10dp"
             android:text="Friend" />
 
     </LinearLayout>
